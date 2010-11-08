@@ -21,7 +21,8 @@ public class BookServiceTest {
 	public void should_retrieve_the_book_i_have_inserted(){
 		Book as_aventuras_de_pedrinho = new Book("As aventuras de Pedrinho.","Monteiro Lobato","8571398291");
 		service.save(as_aventuras_de_pedrinho);
-		Assert.assertEquals(as_aventuras_de_pedrinho, service.retrieve("8571398291"));
+		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
 	}
 	
 	@Test
@@ -33,9 +34,12 @@ public class BookServiceTest {
 		Book o_senhor_dos_aneis = new Book("O senhor dos Aneis.","J.R.R. Tolkien","8571398293");
 		service.save(o_senhor_dos_aneis);
 		
-		Assert.assertEquals(as_aventuras_de_pedrinho, service.retrieve("8571398291"));
-		Assert.assertEquals(a_fundacao, service.retrieve("8571398292"));
-		Assert.assertEquals(o_senhor_dos_aneis, service.retrieve("8571398293"));
+		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
+		Assert.assertEquals(a_fundacao.getAuthor(), service.retrieve("8571398292").getAuthor());
+		Assert.assertEquals(a_fundacao.getName(), service.retrieve("8571398292").getName());
+		Assert.assertEquals(o_senhor_dos_aneis.getAuthor(), service.retrieve("8571398293").getAuthor());
+		Assert.assertEquals(o_senhor_dos_aneis.getName(), service.retrieve("8571398293").getName());
 	}
 	
 	@Test
@@ -43,9 +47,12 @@ public class BookServiceTest {
 		Book as_aventuras_de_pedrinho = new Book("As aventuras de Pedrinho.","Monteiro Lobato","8571398291");
 		service.save(as_aventuras_de_pedrinho);
 		
-		Assert.assertEquals(as_aventuras_de_pedrinho, service.retrieve("8571398291"));
-		Assert.assertEquals(as_aventuras_de_pedrinho, service.retrieve("8571398291"));
-		Assert.assertEquals(as_aventuras_de_pedrinho, service.retrieve("8571398291"));
+		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
+		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
 	}
 	
 }

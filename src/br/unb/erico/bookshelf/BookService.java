@@ -1,6 +1,8 @@
 package br.unb.erico.bookshelf;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 public class BookService {
 
@@ -15,7 +17,9 @@ public class BookService {
 	}
 
 	public Book retrieve(String isbn) {
-		return (Book) sessionFactory.openSession().createCriteria(Book.class).uniqueResult();
+		Criteria criteria = sessionFactory.openSession().createCriteria(Book.class);
+		criteria.add(Restrictions.eq("isbn", isbn));
+		return (Book) criteria.uniqueResult();
 	}
 
 }
