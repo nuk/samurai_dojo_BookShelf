@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+		
+		<!-- Dados de conexao ao banco -->
+
+        <!-- connection.driver_class: Define o driver do banco de dados que sera utilizado. -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+        <!-- connection.url: URL do banco de dados junto a base de dados que sera utilizada. -->
+		<property name="connection.url">jdbc:mysql://localhost/treinamentoHSJ</property>
+
+        <!-- Usuario e senha do banco de dados. -->
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+		
+		<!-- Dialeto SQL para o banco de dados utilizado -->
+		<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		
+		<!-- Habilita gerenciamento automatico de session context -->
+		<property name="current_session_context_class">thread</property>
+		
+		<!-- Exibe no console os SQLs executados -->
+		<property name="show_sql">true</property>
+		
+		<!-- Imprime SQL formatado no console -->
+		<property name="format_sql">true</property>
+		
+		<!-- Listando XML de configuracao para cada classe de persistencia -->
+		<mapping resource="br/treinamento/hsj/hbmxml/usuario.hbm.xml"/>
+		<mapping resource="br/treinamento/hsj/hbmxml/assunto.hbm.xml"/>
+		<mapping resource="br/treinamento/hsj/hbmxml/desdobramento.hbm.xml"/>
+		
+	</session-factory>
+	
+</hibernate-configuration>
