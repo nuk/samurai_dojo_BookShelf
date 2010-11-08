@@ -23,6 +23,9 @@
 		
 		<mapping class="br.unb.erico.bookshelf.Test"/>
 		
+		
+		<!-- test -->
+		
 	</session-factory>
 	
 </hibernate-configuration>
