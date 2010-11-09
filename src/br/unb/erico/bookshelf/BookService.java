@@ -1,15 +1,29 @@
 package br.unb.erico.bookshelf;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookService {
 
-	public void save(Book book) {
-		throw new RuntimeException("Validation exception");
+	private Map<Integer,Book> savedBooks = new HashMap<Integer, Book>();
+	
+	public void save(Book book) throws MissingFieldException {
+		if (book.getIsbn() == null){
+			throw new MissingFieldException("isbn");
+		}else if (book.getName() == null){
+			throw new MissingFieldException("name");
+		}
+		savedBooks.put(book.getIsbn(),book);
 	}
 
 	public List<Book> list() {
-		return null;
+		return new ArrayList<Book>(savedBooks.values());
+	}
+
+	public Book retrieve(Integer isbn) {
+		return savedBooks.get(isbn);
 	}
 
 }
