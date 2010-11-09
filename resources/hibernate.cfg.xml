@@ -21,7 +21,7 @@
         <property name="hibernate.connection.release_mode">after_statement</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 		
-		<!--apping class="br.unb.erico.bookshelf.Book"/-->
+		<mapping class="br.unb.erico.bookshelf.Book"/>
 		
 	</session-factory>
 	

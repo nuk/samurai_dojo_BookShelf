@@ -4,14 +4,24 @@ import static junit.framework.Assert.*;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Before;
 import org.junit.Test;
 
 public class BookServiceTest {
 
+	private BookService service;
+	
+	@Before
+	public void setUp(){
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		service = new BookService(sessionFactory);
+	}
+	
 	@Test
 	public void should_not_insert_a_Book_without_a_ISBN(){
 		Book book = new Book(null,"As aventuras de pedrinho","Monteiro Lobato");
-		BookService service = new BookService();
 		try {
 			service.save(book);
 			fail("Should trhow a validation exception.");
@@ -24,7 +34,6 @@ public class BookServiceTest {
 	@Test
 	public void should_not_insert_a_Book_without_a_Name(){
 		Book book = new Book(123456789,null,"Monteiro Lobato");
-		BookService service = new BookService();
 		try {
 			service.save(book);
 			fail("Should throw a validation exception.");
@@ -37,7 +46,6 @@ public class BookServiceTest {
 	@Test
 	public void should_insert_a_Book_with_all_data() throws Exception{
 		Book book = new Book(123456789,"As aventura de pedrinho","Monteiro Lobato",1894);
-		BookService service = new BookService();
 		
 		service.save(book);
 		Book returnedBook = service.retrieve(123456789);
@@ -50,8 +58,6 @@ public class BookServiceTest {
 	
 	@Test
 	public void should_insert_two_Books_with_only_name_and_isbn() throws Exception{
-		BookService service = new BookService();
-
 		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho");
 		service.save(as_aventuras_de_pedrinho);
 		
@@ -69,8 +75,6 @@ public class BookServiceTest {
 	
 	@Test
 	public void should_list_all_inserted_Books() throws Exception{
-		BookService service = new BookService();
-		
 		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho");
 		service.save(as_aventuras_de_pedrinho);
 		

@@ -1,12 +1,28 @@
 package br.unb.erico.bookshelf;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Book {
 
+	@Id
+	@Column
+	@GeneratedValue
+	private Integer id;
+	@Column
 	private Integer isbn;
+	@Column
 	private String name;
+	@Column
 	private String author;
+	@Column
 	private Integer year;
 
+	public Book() {}
+	
 	public Book(Integer isbn, String name) {
 		super();
 		this.isbn = isbn;
@@ -57,6 +73,14 @@ public class Book {
 
 	public void setYear(Integer year) {
 		this.year = year;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 }
