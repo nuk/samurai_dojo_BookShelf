@@ -1,0 +1,9 @@
+* Features:
+	- Insert a Book with fields
+		- ISBN - Unique
+		- Name - Mandatory
+		- Author
+		- Year
+	- Search a Book by
+		- ISBN
+		- part of the Name
