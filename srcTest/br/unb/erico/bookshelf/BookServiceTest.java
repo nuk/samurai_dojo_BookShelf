@@ -18,7 +18,7 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void should_retrieve_the_book_i_have_inserted(){
+	public void should_retrieve_the_book_i_have_inserted() throws Exception{
 		Book as_aventuras_de_pedrinho = new Book("As aventuras de Pedrinho.","Monteiro Lobato","8571398291");
 		service.save(as_aventuras_de_pedrinho);
 		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
@@ -26,7 +26,7 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void should_retrieve_the_books_i_have_inserted(){
+	public void should_retrieve_the_books_i_have_inserted() throws Exception{
 		Book as_aventuras_de_pedrinho = new Book("As aventuras de Pedrinho.","Monteiro Lobato","8571398291");
 		service.save(as_aventuras_de_pedrinho);
 		Book a_fundacao = new Book("A Fundação.","Isaac Asimov","8571398292");
@@ -43,7 +43,7 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void should_retrieve_the_same_book_i_have_inserted_always(){
+	public void should_retrieve_the_same_book_i_have_inserted_always() throws Exception{
 		Book as_aventuras_de_pedrinho = new Book("As aventuras de Pedrinho.","Monteiro Lobato","8571398291");
 		service.save(as_aventuras_de_pedrinho);
 		
@@ -54,5 +54,16 @@ public class BookServiceTest {
 		Assert.assertEquals(as_aventuras_de_pedrinho.getAuthor(), service.retrieve("8571398291").getAuthor());
 		Assert.assertEquals(as_aventuras_de_pedrinho.getName(), service.retrieve("8571398291").getName());
 	}
+	
+	@Test
+	public void should_not_allow_to_save_a_book_without_a_name(){
+		try {
+			service.save(new Book());
+			Assert.fail();
+		} catch (MissingMandatoryFieldException e) {
+			Assert.assertEquals("name",e.getMissingField());
+		}
+	}
+	
 	
 }

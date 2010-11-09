@@ -12,7 +12,10 @@ public class BookService {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public void save(Book book) {
+	public void save(Book book) throws MissingMandatoryFieldException {
+		if (book.getName() == null){
+			throw new MissingMandatoryFieldException("name");
+		}
 		sessionFactory.openSession().save(book);
 	}
 
