@@ -1,5 +1,6 @@
 package br.unb.erico.bookshelf;
 
+@SuppressWarnings("serial")
 public class MissingFieldException extends Exception {
 
 	private String missingField;

@@ -1,6 +1,9 @@
 package br.unb.erico.bookshelf;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void should_not_insert_a_Book_without_a_ISBN(){
+	public void should_not_insert_a_Book_without_a_ISBN() throws Exception{
 		Book book = new Book(null,"As aventuras de pedrinho","Monteiro Lobato");
 		try {
 			service.save(book);
@@ -32,7 +35,7 @@ public class BookServiceTest {
 	}
 	
 	@Test
-	public void should_not_insert_a_Book_without_a_Name(){
+	public void should_not_insert_a_Book_without_a_Name() throws Exception{
 		Book book = new Book(123456789,null,"Monteiro Lobato");
 		try {
 			service.save(book);
@@ -40,6 +43,20 @@ public class BookServiceTest {
 		} catch (MissingFieldException e) {
 			assertEquals("name",e.getMissingField());
 			assertTrue(service.list().isEmpty());
+		}
+	}
+	
+	@Test
+	public void should_not_insert_a_Book_with_the_same_isbn_as_other() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventuras de pedrinho","Monteiro Lobato");
+		service.save(as_aventuras_de_pedrinho);
+		try {
+			Book as_viagens_de_pedrinho = new Book(123456789,"As viagens de pedrinho","Monteiro Lobato");
+			service.save(as_viagens_de_pedrinho);
+			fail("Should throw a validation exception.");
+		} catch (UniqueFieldViolationException e) {
+			assertEquals("isbn",e.getDuplicatedField());
+			assertEquals(1,service.list().size());
 		}
 	}
 	
@@ -86,5 +103,59 @@ public class BookServiceTest {
 		assertEquals(as_aventuras_de_pedrinho.getIsbn(),books.get(0).getIsbn());
 		assertEquals(a_fundacao.getIsbn(),books.get(1).getIsbn());
 	}
+	
+	@Test
+	public void should_retrieve_nothing_for_an_empty_database(){
+		assertNull(service.retrieve(123456789));
+	}
+	
+	@Test
+	public void should_list_nothing_for_an_empty_database(){
+		assertTrue(service.list().isEmpty());
+	}
+	
+	@Test
+	public void should_list_book_with_a_part_if_the_name_in_the_end() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho");
+		service.save(as_aventuras_de_pedrinho);
+		
+		Book a_fundacao = new Book(123456788,"A Fundação");
+		service.save(a_fundacao);
+		
+		Book a_2a_fundacao = new Book(123456787,"A Segunda Fundação");
+		service.save(a_2a_fundacao);
+		
+		assertEquals(2,service.list("Fundação").size());
+	}
+	
+	@Test
+	public void should_list_book_with_a_part_if_the_name_in_the_middle() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho");
+		service.save(as_aventuras_de_pedrinho);
+		
+		Book a_fundacao = new Book(123456788,"A Fundação");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertEquals(2,service.list("Fundação").size());
+	}
+	
+	@Test
+	public void should_list_nothing_for_a_name_that_does_not_exist() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho");
+		service.save(as_aventuras_de_pedrinho);
+		
+		Book a_fundacao = new Book(123456788,"A Fundação");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertTrue(service.list("Anéis").isEmpty());
+	}
+	
+	
 	
 }
