@@ -1,6 +1,6 @@
 * Features:
 	- Insert a Book with fields
-		- ISBN - Unique
+		- ISBN - Unique Mandatory
 		- Name - Mandatory
 		- Author
 		- Year
