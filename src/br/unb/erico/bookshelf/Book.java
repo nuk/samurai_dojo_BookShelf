@@ -1,9 +1,15 @@
 package br.unb.erico.bookshelf;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Book {
@@ -17,9 +23,9 @@ public class Book {
 	@Column
 	private String name;
 	@Column
-	private String author;
-	@Column
 	private Integer year;
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	private Set<Author> authors;
 
 	public Book() {}
 	
@@ -32,14 +38,18 @@ public class Book {
 	public Book(Integer isbn, String name, String author) {
 		this.isbn = isbn;
 		this.name = name;
-		this.author = author;
+		if (author != null){
+			addAuthor(author);
+		}
 	}
 
 	public Book(Integer isbn, String name, String author, Integer year) {
 		super();
 		this.isbn = isbn;
 		this.name = name;
-		this.author = author;
+		if (author != null){
+			addAuthor(author);
+		}
 		this.year = year;
 	}
 
@@ -59,14 +69,6 @@ public class Book {
 		this.name = name;
 	}
 
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
 	public Integer getYear() {
 		return year;
 	}
@@ -81,6 +83,21 @@ public class Book {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void addAuthor(String authorName) {
+		if (this.authors == null){
+			this.authors = new HashSet<Author>();
+		}
+		this.authors.add(new Author(authorName));
+	}
+
+	public Set<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Set<Author> authors) {
+		this.authors = authors;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
@@ -23,7 +24,10 @@ public class BookService {
 		}else if (retrieve(book.getIsbn()) != null){
 			throw new UniqueFieldViolationException("isbn");
 		}
-		sessionFactory.openSession().save(book);
+		Session session = sessionFactory.openSession();
+		session.save(book);
+		session.flush();
+		session.close();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,6 +46,14 @@ public class BookService {
 	public List<Book> list(String name) {
 		Criteria criteria = sessionFactory.openSession().createCriteria(Book.class);
 		criteria.add(Restrictions.like("name", name,MatchMode.ANYWHERE));
+		return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Book> listByAuthor(String authorName) {
+		Criteria criteria = sessionFactory.openSession().createCriteria(Book.class);
+		criteria.createCriteria("authors")
+			.add(Restrictions.ilike("name", authorName));
 		return criteria.list();
 	}
 

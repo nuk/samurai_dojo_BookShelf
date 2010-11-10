@@ -69,7 +69,7 @@ public class BookServiceTest {
 		
 		assertEquals(book.getIsbn(),returnedBook.getIsbn());
 		assertEquals(book.getName(),returnedBook.getName());
-		assertEquals(book.getAuthor(),returnedBook.getAuthor());
+		assertEquals(book.getAuthors().size(),returnedBook.getAuthors().size());
 		assertEquals(book.getYear(),returnedBook.getYear());
 	}
 	
@@ -88,6 +88,19 @@ public class BookServiceTest {
 		returnedBook = service.retrieve(123456788);
 		assertEquals(a_fundacao.getIsbn(),returnedBook.getIsbn());
 		assertEquals(a_fundacao.getName(),returnedBook.getName());
+	}
+	
+	@Test
+	public void should_insert_a_book_with_multiple_authors() throws Exception{
+		Book the_google = new Book(113456788,"The Google");
+		the_google.addAuthor("Larry Page");
+		the_google.addAuthor("Sergey Brin");
+		service.save(the_google);
+		
+		Book returnedBook = service.retrieve(113456788);
+		assertEquals(the_google.getIsbn(),returnedBook.getIsbn());
+		assertEquals(the_google.getName(),returnedBook.getName());
+		assertEquals(2,returnedBook.getAuthors().size());
 	}
 	
 	@Test
@@ -156,6 +169,54 @@ public class BookServiceTest {
 		assertTrue(service.list("Anéis").isEmpty());
 	}
 	
+	@Test
+	public void should_list_all_books_from_an_author() throws Exception{
+		Book a_fundacao = new Book(123456788,"A Fundação","Isaac Asimov");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império","Isaac Asimov");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertEquals(2,service.listByAuthor("Isaac Asimov").size());
+	}
 	
+	@Test
+	public void should_list_all_books_from_an_author_ignoring_case() throws Exception{
+		Book a_fundacao = new Book(123456788,"A Fundação","Isaac Asimov");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império","Isaac Asimov");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertEquals(2,service.listByAuthor("isaac asimov").size());
+	}
+	
+	@Test
+	public void should_only_list_books_from_that_author() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho","Monteiro Lobato");
+		service.save(as_aventuras_de_pedrinho);
+		
+		Book a_fundacao = new Book(123456788,"A Fundação","Isaac Asimov");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império","Isaac Asimov");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertEquals(2,service.listByAuthor("Isaac Asimov").size());
+	}
+	
+	@Test
+	public void should_list_nothing_for_a_non_existing_author() throws Exception{
+		Book as_aventuras_de_pedrinho = new Book(123456789,"As aventura de pedrinho","Monteiro Lobato");
+		service.save(as_aventuras_de_pedrinho);
+		
+		Book a_fundacao = new Book(123456788,"A Fundação","Isaac Asimov");
+		service.save(a_fundacao);
+		
+		Book a_fundacao_e_o_imperio = new Book(123456786,"A Fundação e o Império","Isaac Asimov");
+		service.save(a_fundacao_e_o_imperio);
+		
+		assertTrue(service.listByAuthor("J.R.R. Tolkien").isEmpty());
+	}
 	
 }

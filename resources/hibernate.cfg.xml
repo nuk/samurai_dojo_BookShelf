@@ -22,6 +22,7 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 		
 		<mapping class="br.unb.erico.bookshelf.Book"/>
+		<mapping class="br.unb.erico.bookshelf.Author"/>
 		
 	</session-factory>
 	
